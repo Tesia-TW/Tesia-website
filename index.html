@@ -1395,9 +1395,11 @@ $('#enq').addEventListener('submit',e=>{e.preventDefault();
   if(!name||!em){$('#err').textContent='請填寫姓名與電子郵件，以便我們回覆。';return}
   const text=`收件人：service@tesia.com.tw\n主旨：${org||name} 的詢問\n\n姓名：${name}\n單位：${org||'-'}\n電子郵件：${em}\n感興趣的項目：${ints.join('、')||'一般詢問'}\n\n${msg}`;
   const w=$('#formWrap');w.innerHTML='';const d=document.createElement('div');d.className='done';
-  d.innerHTML='<div class="label" style="color:#A7A59C">詢問內容已準備好</div><h3>請寄至 service@tesia.com.tw</h3><p style="color:#BDBBB2;font-size:14px">將下方文字複製到 email 中寄出，我們會回覆每一封詢問。</p>';
+  d.innerHTML='<div class="label" style="color:#A7A59C">詢問內容已準備好</div><h3>請寄至 service@tesia.com.tw</h3><p style="color:#BDBBB2;font-size:14px">按下「用 Email 寄出」會開啟您的郵件程式，內容已經填好，確認後按傳送即可。也可以複製下方文字自行寄出，我們會回覆每一封詢問。</p>';
   const pre=document.createElement('pre');pre.textContent=text;d.append(pre);
-  const b=document.createElement('button');b.className='btn';b.type='button';b.textContent='複製詢問內容';
+  const subj=`${org||name} 的詢問`,body=text.split('\n').slice(3).join('\n');
+  const m=document.createElement('a');m.className='btn';m.href='mailto:service@tesia.com.tw?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);m.textContent='用 Email 寄出';m.style.marginRight='10px';d.append(m);
+  const b=document.createElement('button');b.className='btn';b.style.cssText='background:transparent;color:#EDEBE3;border-color:#6A6A64';b.type='button';b.textContent='複製詢問內容';
   b.onclick=()=>navigator.clipboard?.writeText(text).then(()=>b.textContent='已複製').catch(()=>{const r=document.createRange();r.selectNodeContents(pre);getSelection().removeAllRanges();getSelection().addRange(r)});
   d.append(b);w.append(d);
 });
