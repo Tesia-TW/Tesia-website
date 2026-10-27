@@ -1068,7 +1068,8 @@ article.field h3 .zh,.cdmo h3 .zh{font-family:var(--zh);font-size:.6em;letter-sp
           </div>
           <div class="field"><label for="f-msg">Message</label><textarea id="f-msg" placeholder="Tell us briefly about your clients or partnership project"></textarea></div>
           <p class="err" id="err" aria-live="polite"></p>
-          <button class="btn" type="submit">Prepare my enquiry <span class="arr">→</span></button>
+          <input type="text" name="_honey" id="f-honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          <button class="btn" type="submit" id="f-send">Send enquiry <span class="arr">→</span></button>
         </form>
       </div>
     </div>
@@ -1414,19 +1415,34 @@ if(!reduce){const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isInterse
 $$('button.copy').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.copy,old=b.textContent;navigator.clipboard?.writeText(v).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent=old,1400)}).catch(()=>{const r=document.createRange();r.selectNodeContents(b);getSelection().removeAllRanges();getSelection().addRange(r)})}));
 
 // enquiry: composed for the visitor to send, since this page cannot submit
-$('#enq').addEventListener('submit',e=>{e.preventDefault();
+$('#enq').addEventListener('submit',async e=>{e.preventDefault();
   const name=$('#f-name').value.trim(),org=$('#f-org').value.trim(),em=$('#f-email').value.trim(),msg=$('#f-msg').value.trim();
   const ints=$$('.interest input:checked').map(i=>i.value);
   if(!name||!em){$('#err').textContent='Please enter your name and email so we can reply.';return}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){$('#err').textContent='Please check your email address.';return}
+  if($('#f-honey').value)return;
+  const btn=$('#f-send');btn.disabled=true;btn.textContent='Sending…';$('#err').textContent='';
+  const subj=`Enquiry from ${org||name}`;
+  try{
+    const r=await fetch('https://formsubmit.co/ajax/service@tesia.com.tw',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({'Name':name,'Organisation':org||'-','Email':em,'Interested in':ints.join(', ')||'General enquiry','Message':msg||'-',_subject:subj,_replyto:em,_template:'table'})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||String(j.success)!=='true')throw new Error(j.message||r.status);
+    const w=$('#formWrap');w.innerHTML='';const d=document.createElement('div');d.className='done';
+    d.innerHTML='<div class="label" style="color:#A7A59C">Enquiry received</div><h3>Thank you, your message has been sent</h3><p style="color:#BDBBB2;font-size:14px">We will reply by email as soon as we can.</p>';
+    w.append(d);
+  }catch(err){showFallback()}
+  function showFallback(){
   const text=`To: service@tesia.com.tw\nSubject: Enquiry from ${org||name}\n\nName: ${name}\nOrganisation: ${org||'-'}\nEmail: ${em}\nInterested in: ${ints.join(', ')||'General enquiry'}\n\n${msg}`;
   const w=$('#formWrap');w.innerHTML='';const d=document.createElement('div');d.className='done';
-  d.innerHTML='<div class="label" style="color:#A7A59C">Your enquiry is ready</div><h3>Please send it to service@tesia.com.tw</h3><p style="color:#BDBBB2;font-size:14px">Press &quot;Send by email&quot; to open your email app with everything filled in, then just press send. You can also copy the text below and send it yourself. We reply to every enquiry.</p>';
+  d.innerHTML='<div class="label" style="color:#A7A59C">Could not send directly</div><h3>Please send it to service@tesia.com.tw</h3><p style="color:#BDBBB2;font-size:14px">Press &quot;Send by email&quot; to open your email app with everything filled in, then just press send. You can also copy the text below and send it yourself. We reply to every enquiry.</p>';
   const pre=document.createElement('pre');pre.textContent=text;d.append(pre);
-  const subj=`Enquiry from ${org||name}`,body=text.split('\n').slice(3).join('\n');
+  const body=text.split('\n').slice(3).join('\n');
   const m=document.createElement('a');m.className='btn';m.href='mailto:service@tesia.com.tw?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);m.textContent='Send by email';m.style.marginRight='10px';d.append(m);
   const b=document.createElement('button');b.className='btn';b.style.cssText='background:transparent;color:#EDEBE3;border-color:#6A6A64';b.type='button';b.textContent='Copy enquiry';
   b.onclick=()=>navigator.clipboard?.writeText(text).then(()=>b.textContent='Copied').catch(()=>{const r=document.createRange();r.selectNodeContents(pre);getSelection().removeAllRanges();getSelection().addRange(r)});
   d.append(b);w.append(d);
+  }
 });
 })();
 </script>
