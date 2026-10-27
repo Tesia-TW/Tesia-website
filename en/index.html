@@ -1431,8 +1431,8 @@ $('#enq').addEventListener('submit',async e=>{e.preventDefault();
     const w=$('#formWrap');w.innerHTML='';const d=document.createElement('div');d.className='done';
     d.innerHTML='<div class="label" style="color:#A7A59C">Enquiry received</div><h3>Thank you, your message has been sent</h3><p style="color:#BDBBB2;font-size:14px">We will reply by email as soon as we can.</p>';
     w.append(d);
-  }catch(err){showFallback()}
-  function showFallback(){
+  }catch(err){console.warn('FormSubmit',err);showFallback(String(err&&err.message||err))}
+  function showFallback(why){
   const text=`To: service@tesia.com.tw\nSubject: Enquiry from ${org||name}\n\nName: ${name}\nOrganisation: ${org||'-'}\nEmail: ${em}\nInterested in: ${ints.join(', ')||'General enquiry'}\n\n${msg}`;
   const w=$('#formWrap');w.innerHTML='';const d=document.createElement('div');d.className='done';
   d.innerHTML='<div class="label" style="color:#A7A59C">Could not send directly</div><h3>Please send it to service@tesia.com.tw</h3><p style="color:#BDBBB2;font-size:14px">Press &quot;Send by email&quot; to open your email app with everything filled in, then just press send. You can also copy the text below and send it yourself. We reply to every enquiry.</p>';
@@ -1441,7 +1441,9 @@ $('#enq').addEventListener('submit',async e=>{e.preventDefault();
   const m=document.createElement('a');m.className='btn';m.href='mailto:service@tesia.com.tw?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);m.textContent='Send by email';m.style.marginRight='10px';d.append(m);
   const b=document.createElement('button');b.className='btn';b.style.cssText='background:transparent;color:#EDEBE3;border-color:#6A6A64';b.type='button';b.textContent='Copy enquiry';
   b.onclick=()=>navigator.clipboard?.writeText(text).then(()=>b.textContent='Copied').catch(()=>{const r=document.createRange();r.selectNodeContents(pre);getSelection().removeAllRanges();getSelection().addRange(r)});
-  d.append(b);w.append(d);
+  d.append(b);
+  if(why){const q=document.createElement('p');q.style.cssText='color:#7E7C75;font-size:12px;margin-top:18px;word-break:break-all';q.textContent='(Technical detail: '+why+'）';d.append(q)}
+  w.append(d);
   }
 });
 })();
