@@ -12582,6 +12582,7 @@ $('form').onsubmit=e=>{
    <div class="sf"><span>仲璟生醫 tesia Cell Therapeutic Inc.</span><span>${ts}</span></div>`;
   if(!hosted){$('notLive').style.display='block';$('notLive').textContent='⚠ 網頁放上公司官網後，這個 QR 和網址才能使用。'}
   $('openA').href=link;
+  if(hosted){location.href=link;return}
   $('form').style.display='none'; $('result').style.display='block'; window.scrollTo(0,0);
 };
 $('copyL').onclick=async()=>{try{await navigator.clipboard.writeText(link)}catch(e){const t=document.createElement('textarea');t.value=link;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()} $('copyL').textContent='已複製 ✓'; setTimeout(()=>$('copyL').textContent='複製網址',1500)};
