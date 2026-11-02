@@ -2449,7 +2449,11 @@ if(C.phone) $('telA').href="tel:"+C.phone; if(C.email) $('mailA').href="mailto:"
 if(C.wechatLink){const q=qrcode(0,'M');q.addData(C.wechatLink);q.make();$('wcQr').innerHTML=q.createSvgTag({cellSize:6,margin:0,scalable:true});}
 else if(u){const img=new Image(); img.alt="WeChat QR"; img.onload=()=>{$('wcQr').innerHTML='';$('wcQr').appendChild(img)};
 img.onerror=()=>{$('wcQr').style.display='none'}; img.src=C.wechatQr;} else $('wcQr').style.display='none';
-if($('wcBtn')) $('wcBtn').onclick=()=>$('sheet').classList.add('on');
+if($('wcBtn')) $('wcBtn').onclick=async()=>{
+  if(!C.wechatId){$('sheet').classList.add('on');return}
+  try{await navigator.clipboard.writeText(C.wechatId)}catch(e){const t=document.createElement('textarea');t.value=C.wechatId;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}
+  $('toast').textContent='已複製 WeChat ID，請在 WeChat 搜尋貼上'; $('toast').classList.add('on'); setTimeout(()=>$('toast').classList.remove('on'),2500);
+  setTimeout(()=>{location.href='weixin://'},700)};
 $('closeBtn').onclick=()=>$('sheet').classList.remove('on');
 $('myQrBtn').onclick=()=>{ if(!$('bigQr').innerHTML){const q=qrcode(0,'M');q.addData(location.href,'Byte');q.make();
   $('bigQr').innerHTML=q.createSvgTag({cellSize:4,margin:0,scalable:true}).replace(/fill="black"/g,'fill="#20454A"')} $('qrSheet').classList.add('on')};

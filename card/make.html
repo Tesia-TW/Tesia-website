@@ -92,18 +92,12 @@ input.bad{border-color:var(--err)}
 </fieldset>
 
 <fieldset><div class="lg">通訊軟體</div>
- <div class="f"><label>LINE 行動條碼（建議）</label>
-  <div class="up"><label class="btnu" for="lq">選擇截圖…</label><input type="file" id="lq" accept="image/*"><img id="lqPrev" alt=""><span id="lqMsg" style="font-size:13px"></span></div>
-  <div class="hint">LINE「主頁 › 右上角加入好友 › 行動條碼 › 我的行動條碼」截圖後上傳。對方點 LINE 就能直接加您好友。</div></div>
- <div class="f"><label for="ln">或填 LINE ID / 邀請連結</label><input type="text" id="ln" autocapitalize="off" placeholder="例：yuwei_cheng 或 https://line.me/ti/p/...">
-  <div class="hint">只填 ID 的話，需在 LINE「設定 › 隱私設定」開啟「允許利用 ID 加入好友」。</div></div>
+ <div class="f"><label for="ln">LINE 加好友連結</label><input type="url" id="ln" autocapitalize="off" placeholder="https://line.me/ti/p/...">
+  <div class="hint">LINE「主頁 › 右上角 <b>加入好友</b> › <b>行動條碼</b> › 下方 <b>複製連結</b>」，貼到這裡。對方點 LINE 就會直接加您好友。</div></div>
  <div class="f"><label for="wa">WhatsApp 號碼</label><input type="tel" id="wa" inputmode="tel" placeholder="+886 912 345 678">
   <label class="chk"><input type="checkbox" id="waSame"> 與手機號碼相同</label></div>
  <div class="f"><label for="wc">WeChat ID</label><input type="text" id="wc" autocapitalize="off" placeholder="WeChat 號">
-  <div class="hint">在 WeChat「我 › 個人資料 › 微信號」。</div></div>
- <div class="f"><label>WeChat 二維碼（建議）</label>
-  <div class="up"><label class="btnu" for="wq">選擇截圖…</label><input type="file" id="wq" accept="image/*"><img id="wqPrev" alt=""><span id="wqMsg" style="font-size:13px"></span></div>
-  <div class="hint">WeChat「我 › 個人資料 › 我的二維碼」截圖後上傳。只會讀取二維碼內容，圖片不會上傳到任何地方。</div></div>
+  <div class="hint">在 WeChat「我 › 個人資料 › 微信號」。WeChat 沒有加好友連結，對方點 WeChat 時會自動複製您的 ID 並打開 WeChat 讓他搜尋。</div></div>
 </fieldset>
 
 <button class="go" type="submit">產生我的 QR</button>
@@ -12550,8 +12544,7 @@ function readQR(input,prev,msg,ok,cb){input.onchange=e=>{const f=e.target.files[
     const res=jsQR(d.data,cv.width,cv.height); const t=res&&res.data?res.data:''; const good=cb(t);
     prev.src=r.result; prev.style.display='block';
     msg.textContent=good?ok:'讀不到條碼，請換一張清楚、只有條碼的截圖'; msg.style.color=good?'#2e7d4f':'var(--err)'}; im.src=r.result}; r.readAsDataURL(f)}}
-readQR($('wq'),$('wqPrev'),$('wqMsg'),'✓ 已讀取 WeChat 二維碼',t=>{wqLink=t;return !!t});
-readQR($('lq'),$('lqPrev'),$('lqMsg'),'✓ 已讀取 LINE 行動條碼',t=>{if(/line\.me\//i.test(t)){$('ln').value=t;return true}return false});
+
 $('waSame').onchange=e=>{ if(e.target.checked){$('wa').value=$('ph').value;} $('wa').disabled=e.target.checked };
 $('ph').oninput=()=>{ if($('waSame').checked) $('wa').value=$('ph').value };
 const icons={ph:['#20454A','☎'],em:['#20454A','@'],ln:['#06C755','LINE'],wa:['#25D366','WA'],wc:['#07C160','微信']};
