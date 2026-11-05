@@ -9,5 +9,21 @@ window.STAFF = {
     line: "",
     whatsapp: "+886 937 896 999",
     wechatId: ""
+  },
+  "junlin": {
+    name: "林玟君", en: "Jun Lin",
+    title: "董事", titleEn: "Director",
+    phone: "+886 932 970 503", email: "service@tesia.com.tw",
+    line: "",
+    whatsapp: "",
+    wechatId: ""
+  },
+  "zoyhsieh": {
+    name: "謝雨純", en: "Zoy Hsieh",
+    title: "醫療總監", titleEn: "Medical Director",
+    phone: "+886 970 432 571", email: "service@tesia.com.tw",
+    line: "",
+    whatsapp: "",
+    wechatId: ""
   }
 };
