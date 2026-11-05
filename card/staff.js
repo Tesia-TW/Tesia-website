@@ -9,5 +9,21 @@ window.STAFF = {
     line: "",
     whatsapp: "+886 937 896 999",
     wechatId: ""
+  },
+  "junlin": {
+    name: "林玟君", en: "Jun Lin",
+    title: "董事", titleEn: "Director",
+    phone: "+886 932 970 503", email: "chun615168@yahoo.com.tw",
+    line: "",
+    whatsapp: "+61 452 317 818",
+    wechatId: ""
+  },
+  "zoyhsieh": {
+    name: "謝雨純", en: "Zoy Hsieh",
+    title: "醫療總監", titleEn: "Medical Director",
+    phone: "+886 970 432 571", email: "s0970432571@gmail.com",
+    line: "",
+    whatsapp: "+886 970 432 571",
+    wechatId: "zoy9487"
   }
 };
