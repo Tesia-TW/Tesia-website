@@ -1,5 +1,5 @@
 /* 員工名單：每人一筆。key = 網址代號（小寫英文/數字），QR 網址 = https://www.tesia.com.tw/card/?u=代號
-   WeChat 二維碼圖片放在 wechat/代號.png
+   WeChat 二維碼：wechatLink 填二維碼內容（https://u.wechat.com/…），或圖片放在 wechat/代號.png
    phone / whatsapp 用國際格式（+886…）。沒有的欄位留空或刪掉即可，頁面會自動隱藏該按鈕。 */
 window.STAFF = {
   "ywcheng": {
@@ -32,6 +32,7 @@ window.STAFF = {
     phone: "+886 975 350 269", email: "twlee@tesia.com.tw",
     line: "https://line.me/ti/p/5kmLbVz8Xp",
     whatsapp: "+886 975 350 269",
-    wechatId: "vincent1122000"
+    wechatId: "vincent1122000",
+    wechatLink: "https://u.wechat.com/kHEjacwjB7qHVHgNoZ3587w?s=2"
   }
 };
