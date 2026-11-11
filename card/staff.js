@@ -24,7 +24,8 @@ window.STAFF = {
     phone: "+886 970 432 571", email: "s0970432571@gmail.com",
     line: "",
     whatsapp: "+886 970 432 571",
-    wechatId: "zoy9487"
+    wechatId: "zoy9487",
+    wechatLink: "https://u.wechat.com/kNGv1Hg1sE_8NavRcABxJPQ?s=2"
   },
   "twlee": {
     name: "李子文", en: "Vincent Lee",
