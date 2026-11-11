@@ -9,5 +9,29 @@ window.STAFF = {
     line: "",
     whatsapp: "+886 937 896 999",
     wechatId: ""
+  },
+  "junlin": {
+    name: "林玟君", en: "Jun Lin",
+    title: "董事", titleEn: "Director",
+    phone: "+886 932 970 503", email: "chun615168@yahoo.com.tw",
+    line: "",
+    whatsapp: "+61 452 317 818",
+    wechatId: ""
+  },
+  "zoyhsieh": {
+    name: "謝雨純", en: "Zoy Hsieh",
+    title: "醫療總監", titleEn: "Medical Director",
+    phone: "+886 970 432 571", email: "s0970432571@gmail.com",
+    line: "",
+    whatsapp: "+886 970 432 571",
+    wechatId: "zoy9487"
+  },
+  "twlee": {
+    name: "李子文", en: "Vincent Lee",
+    title: "副總經理", titleEn: "Vice President",
+    phone: "+886 975 350 269", email: "twlee@tesia.com.tw",
+    line: "https://line.me/ti/p/5kmLbVz8Xp",
+    whatsapp: "+886 975 350 269",
+    wechatId: "vincent1122000"
   }
 };
