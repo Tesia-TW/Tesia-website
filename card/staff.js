@@ -25,5 +25,13 @@ window.STAFF = {
     line: "",
     whatsapp: "+886 970 432 571",
     wechatId: "zoy9487"
+  },
+  "twlee": {
+    name: "李子文", en: "Vincent Lee",
+    title: "副總經理", titleEn: "Vice President",
+    phone: "+886 975 350 269", email: "twlee@tesia.com.tw",
+    line: "https://line.me/ti/p/5kmLbVz8Xp",
+    whatsapp: "+886 975 350 269",
+    wechatId: "vincent1122000"
   }
 };
