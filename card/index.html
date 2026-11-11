@@ -51,7 +51,7 @@ footer b{color:var(--ink);font-weight:500}
 .card{width:100%;max-width:440px;background:var(--cream);border-radius:22px 22px 0 0;padding:22px 22px calc(24px + env(safe-area-inset-bottom));text-align:center;animation:up .22s ease-out}
 @keyframes up{from{transform:translateY(40px);opacity:0}}
 .card h2{font-size:18px;margin-bottom:4px}
-.card p{font-size:13px;color:var(--muted)}
+.card p{font-size:13px;color:var(--muted);line-height:1.7}
 .qr{width:220px;height:220px;margin:16px auto;background:#fff;border-radius:14px;padding:10px;display:grid;place-items:center;border:1px solid #e4dfd3}
 .qr img,.qr svg{width:100%;height:100%;object-fit:contain;display:block}.qr svg path{fill:#000}
 .qr .ph{font-size:13px;color:#9aa7a8;line-height:1.6}
@@ -108,7 +108,7 @@ footer b{color:var(--ink);font-weight:500}
 <div class="sheet" id="sheet">
   <div class="card" role="dialog" aria-label="WeChat">
     <h2>WeChat 加我好友</h2>
-    <p>截圖下方 QR，在 WeChat「掃一掃 › 相簿」加入</p>
+    <p id="wcHow">① 長按或截圖下方二維碼存到相簿<br>② 打開 WeChat「掃一掃」› 右上角「相冊」選這張圖<br>即可直接加我好友</p>
     <div class="qr" id="wcQr"></div>
     <div class="idrow">ID：<code id="wcId"></code></div>
     <div class="acts"><button class="pill p" id="copyBtn" type="button">複製 ID</button><a class="pill s" href="weixin://" style="text-decoration:none">開啟 WeChat</a><button class="pill s" id="closeBtn" type="button">關閉</button></div>
@@ -124,7 +124,7 @@ footer b{color:var(--ink);font-weight:500}
 </div>
 <div class="toast" id="toast">已複製 WeChat ID</div>
 
-<script src="staff.js"></script>
+<script>document.write('<script src="staff.js?v='+Date.now()+'"><\/script>')</script>
 <script>
 //---------------------------------------------------------------------
 //
@@ -2446,14 +2446,13 @@ $('waTxt').textContent="+"+C.whatsapp.replace(/^886(\d)(\d{2})(\d{3})(\d{3})$/,"
 if(C.wechatId||C.wechatLink) $('wcTxt').textContent=C.wechatId?"ID："+C.wechatId:'掃描 QR 加好友';
 if(C.wechatId) $('wcId').textContent=C.wechatId; else {$('wcId').parentNode.remove(); $('copyBtn').remove();}
 if(C.phone) $('telA').href="tel:"+C.phone; if(C.email) $('mailA').href="mailto:"+C.email; $('webA').href=C.web;
-if(C.wechatLink){const q=qrcode(0,'M');q.addData(C.wechatLink);q.make();$('wcQr').innerHTML=q.createSvgTag({cellSize:6,margin:0,scalable:true});}
+const wcNoQr=()=>{$('wcQr').style.display='none';$('wcHow').textContent='請在 WeChat 搜尋以下 ID 加我好友'};
+if(C.wechatLink){const q=qrcode(0,'M');q.addData(C.wechatLink);q.make();const n=q.getModuleCount(),sc=12,m=3,cv=document.createElement('canvas');cv.width=cv.height=(n+m*2)*sc;
+  const x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,cv.width,cv.height);x.fillStyle='#000';for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(q.isDark(r,k))x.fillRect((k+m)*sc,(r+m)*sc,sc,sc);
+  const im=new Image();im.alt='WeChat QR';im.src=cv.toDataURL('image/png');$('wcQr').innerHTML='';$('wcQr').appendChild(im);}
 else if(u){const img=new Image(); img.alt="WeChat QR"; img.onload=()=>{$('wcQr').innerHTML='';$('wcQr').appendChild(img)};
-img.onerror=()=>{$('wcQr').style.display='none'}; img.src=C.wechatQr;} else $('wcQr').style.display='none';
-if($('wcBtn')) $('wcBtn').onclick=async()=>{
-  if(!C.wechatId){$('sheet').classList.add('on');return}
-  try{await navigator.clipboard.writeText(C.wechatId)}catch(e){const t=document.createElement('textarea');t.value=C.wechatId;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}
-  $('toast').textContent='已複製 WeChat ID，請在 WeChat 搜尋貼上'; $('toast').classList.add('on'); setTimeout(()=>$('toast').classList.remove('on'),2500);
-  setTimeout(()=>{location.href='weixin://'},700)};
+img.onerror=wcNoQr; img.src=C.wechatQr;} else wcNoQr();
+if($('wcBtn')) $('wcBtn').onclick=()=>$('sheet').classList.add('on');
 $('closeBtn').onclick=()=>$('sheet').classList.remove('on');
 $('myQrBtn').onclick=()=>{ if(!$('bigQr').innerHTML){const q=qrcode(0,'M');q.addData(location.href,'Byte');q.make();
   $('bigQr').innerHTML=q.createSvgTag({cellSize:4,margin:0,scalable:true}).replace(/fill="black"/g,'fill="#20454A"')} $('qrSheet').classList.add('on')};
