@@ -97,7 +97,10 @@ input.bad{border-color:var(--err)}
  <div class="f"><label for="wa">WhatsApp 號碼</label><input type="tel" id="wa" inputmode="tel" placeholder="+886 912 345 678">
   <label class="chk"><input type="checkbox" id="waSame"> 與手機號碼相同</label></div>
  <div class="f"><label for="wc">WeChat ID</label><input type="text" id="wc" autocapitalize="off" placeholder="WeChat 號">
-  <div class="hint">在 WeChat「我 › 個人資料 › 微信號」。WeChat 沒有加好友連結，對方點 WeChat 時會自動複製您的 ID 並打開 WeChat 讓他搜尋。</div></div>
+  <div class="hint">在 WeChat「我 › 個人資料 › 微信號」。</div></div>
+ <div class="f"><label>WeChat 二維碼（建議）</label>
+  <div class="up"><label class="btnu" for="wq">選擇截圖…</label><input type="file" id="wq" accept="image/*"><img id="wqPrev" alt=""><span id="wqMsg" style="font-size:13px"></span></div>
+  <div class="hint">WeChat「我 › 個人資料 › 我的二維碼」截圖後上傳。客戶在您的聯絡頁點 WeChat 會看到這個二維碼，截圖後用 WeChat「掃一掃 › 相冊」就能直接加您。</div></div>
 </fieldset>
 
 <button class="go" type="submit">產生我的 QR</button>
@@ -12544,6 +12547,7 @@ function readQR(input,prev,msg,ok,cb){input.onchange=e=>{const f=e.target.files[
     const res=jsQR(d.data,cv.width,cv.height); const t=res&&res.data?res.data:''; const good=cb(t);
     prev.src=r.result; prev.style.display='block';
     msg.textContent=good?ok:'讀不到條碼，請換一張清楚、只有條碼的截圖'; msg.style.color=good?'#2e7d4f':'var(--err)'}; im.src=r.result}; r.readAsDataURL(f)}}
+readQR($('wq'),$('wqPrev'),$('wqMsg'),'✓ 已讀取 WeChat 二維碼',t=>{wqLink=t;return !!t});
 
 $('waSame').onchange=e=>{ if(e.target.checked){$('wa').value=$('ph').value;} $('wa').disabled=e.target.checked };
 $('ph').oninput=()=>{ if($('waSame').checked) $('wa').value=$('ph').value };
